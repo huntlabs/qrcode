@@ -17,6 +17,11 @@ extern (C) size_t iconv (iconv_t cd, void **inbuf,
 // close converter
 extern (C) int iconv_close (iconv_t cd);
 
+///编码转换
+string iconv_charset(string inbuf, string tocode, string fromcode)
+{
+	return "";
+}
 
 unittest{
 	import std.stdio;

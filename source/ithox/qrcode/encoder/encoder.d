@@ -323,7 +323,8 @@ class Encoder
             throw new Exception("Could not encode content to " ~ encoding);
         }
 		*/
-		std.stdio.writeln("content:", content);
+		version(ITHOX_QRCODE)
+			std.stdio.writeln("content:", content);
         auto length =content.length;
         for (auto i = 0; i < length; i++) {
             bits.appendBits(cast(int)(content[i]), 8, true);

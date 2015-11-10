@@ -32,6 +32,7 @@ public import ithox.qrcode.renderer.text.html;
 public import ithox.qrcode.renderer.text.plain;
 public import ithox.qrcode.renderer.image.abstractrender;
 public import ithox.qrcode.renderer.image.svg;
+public import ithox.qrcode.renderer.image.eps;
 public import ithox.qrcode.renderer.image.decorator.decoratorinterface;
 public import ithox.qrcode.renderer.image.decorator.finderpattern;
 
