@@ -113,6 +113,7 @@ class Svg : AbstractRenderer
     {
 		import std.string;
 		this.svg ~= this.defs;
+		this.prototypeIds = string[string].init;
         return this.svg.toString();
     }
     /**

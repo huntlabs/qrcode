@@ -20,7 +20,7 @@ class BitArray
 	*
 	* @var integer
 	*/
-    protected int size;
+    protected BitArrayBitType size;
     /**
 	* Creates a new bit array with a given size.
 	*
@@ -36,7 +36,7 @@ class BitArray
 	*
 	* @return integer
 	*/
-    public int getSize()
+    public BitArrayBitType getSize()
     {
         return this.size;
     }
@@ -45,7 +45,7 @@ class BitArray
 	*
 	* @return integer
 	*/
-    public int getSizeInBytes()
+    public BitArrayBitType getSizeInBytes()
     {
         return (this.size + 7) >> 3;
     }
@@ -55,7 +55,7 @@ class BitArray
 	* @param  integer size
 	* @return void
 	*/
-    public void ensureCapacity(int size)
+    public void ensureCapacity(BitArrayBitType size)
     {
         if (size > bits.length << 5) {
             this.bits.length = (size + 31) >> 5;
@@ -67,9 +67,9 @@ class BitArray
 	* @param  integer i
 	* @return boolean
 	*/
-    public bool get(int i)
+    public bool get(long i)
     {
-        return (this.bits[i >> 5] & (1 << (i & 0x1f))) != 0;
+		return (this.bits[i >> 5] & (1L << (i & 0x1f))) != 0;
     }
     /**
 	* Sets a specific bit.
@@ -79,7 +79,7 @@ class BitArray
 	*/
     public void set(int i)
     {
-        this.bits[i >> 5] = this.bits[i >> 5] | 1 << (i & 0x1f);
+        this.bits[i >> 5] = this.bits[i >> 5] | 1L << (i & 0x1f);
     }
     /**
 	* Flips a specific bit.
@@ -89,7 +89,7 @@ class BitArray
 	*/
     public void flip(int i)
     {
-        this.bits[i >> 5] ^= 1 << (i & 0x1f);
+        this.bits[i >> 5] ^= 1L << (i & 0x1f);
     }
     /**
 	* Gets the next set bit position from a given position.
@@ -97,7 +97,7 @@ class BitArray
 	* @param  integer from
 	* @return integer
 	*/
-    public ulong getNextSet(int from)
+    public long getNextSet(long from)
     {
         if (from >= this.size) {
             return this.size;
@@ -105,7 +105,7 @@ class BitArray
        auto bitsOffset  = from >> 5;
         auto currentBits = this.bits[bitsOffset];
         auto bitsLength  = this.bits.length;
-        currentBits &= ~((1 << (from & 0x1f)) - 1);
+        currentBits &= ~((1L << (from & 0x1f)) - 1);
         while (currentBits == 0) {
             if (++bitsOffset == bitsLength) {
                 return this.size;
@@ -129,7 +129,7 @@ class BitArray
         auto bitsOffset  = from >> 5;
         auto currentBits = ~this.bits[bitsOffset];
         auto bitsLength  = this.bits.length;
-        currentBits &= ~((1 << (from & 0x1f)) - 1);
+        currentBits &= ~((1L << (from & 0x1f)) - 1);
         while (currentBits == 0) {
             if (++bitsOffset == bitsLength) {
                 return this.size;
@@ -178,7 +178,7 @@ class BitArray
             } else {
                 mask = 0;
                 for (auto j = firstBit; j < lastBit; j++) {
-                    mask |= 1 << j;
+                    mask |= 1L << j;
                 }
             }
             this.bits[i] = this.bits[i] | mask;
@@ -222,7 +222,7 @@ class BitArray
             } else {
                 mask = 0;
                 for (auto j = firstBit; j <= lastBit; j++) {
-                    mask |= 1 << j;
+                    mask |= 1L << j;
                 }
             }
             if ((this.bits[i] & mask) != (value ? mask : 0)) {
@@ -244,13 +244,13 @@ class BitArray
 			if(test)
 			{
 				import std.stdio;
-				writeln("---",this.bits, " size:", this.size);
+				//writeln("---",this.bits, " size:", this.size);
 			}
             this.bits[this.size >> 5] = this.bits[this.size >> 5] | (1L << (this.size & 0x1f));
 			if(test)
 			{
 				import std.stdio;
-				writeln(this.bits);
+				//writeln(this.bits);
 			}
         }
         this.size++;
@@ -273,7 +273,7 @@ class BitArray
 			if(test)
 			{
 				import std.stdio;
-				writeln("value:", value , " xxx:", ((value >> (numBitsLeft - 1)) & 0x01));
+				//writeln("value:", value , " xxx:", ((value >> (numBitsLeft - 1)) & 0x01));
 			}
             this.appendBit(((value >> (numBitsLeft - 1)) & 0x01) == 1, test);
         }
@@ -323,7 +323,7 @@ class BitArray
            auto  _byte = 0;
             for (auto j = 0; j < 8; j++) {
                 if (this.get(bitOffset)) {
-                    _byte |= 1 << (7 - j);
+                    _byte |= 1L << (7 - j);
                 }
                 bitOffset++;
             }
@@ -350,7 +350,7 @@ class BitArray
        auto newBits = new BitArrayBitType[this.bits.length];
         for (auto i = 0; i < this.size; i++) {
             if (this.get(this.size - i - 1)) {
-                newBits[i >> 5] = newBits[i >> 5] | (1 << (i & 0x1f));
+                newBits[i >> 5] = newBits[i >> 5] | (1L << (i & 0x1f));
             }
         }
         this.bits = newBits;

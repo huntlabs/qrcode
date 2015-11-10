@@ -54,8 +54,6 @@ class Encoder
         // will not attempt to use multiple modes / segments even if that were
         // more efficient. Would be nice.
         auto mode = chooseMode(content, encoding);
-		version(ITHOX_QRCODE)
-			std.stdio.writeln("mode.mode:", mode.mode);
         // This will store the header information, like mode and length, as well
         // as "header" segments like an ECI segment.
         auto headerBits = new BitArray();
@@ -66,28 +64,22 @@ class Encoder
 				appendEci(eci, headerBits);
           //  }
         }
-		std.stdio.writeln("headerBits:", headerBits.getBitArray(), headerBits.getSize());
-        // (With ECI in place,) Write the mode marker
+		 // (With ECI in place,) Write the mode marker
 		appendModeInfo(mode, headerBits);
-		std.stdio.writeln("headerBits:", headerBits.getBitArray(), headerBits.getSize());
-        // Collect data within the main segment, separately, to count its size
+	  // Collect data within the main segment, separately, to count its size
         // if needed. Don't add it to main payload yet.
         auto dataBits = new BitArray();
-		std.stdio.writeln("dataBits:", dataBits.getBitArray(), " size:", dataBits.getSize());
-	    appendBytes(content, mode, dataBits, encoding);
+		  appendBytes(content, mode, dataBits, encoding);
 
-		std.stdio.writeln("dataBits:", dataBits.getBitArray(), " size:", dataBits.getSize());
-        // Hard part: need to know version to know how many bits length takes.
+		 // Hard part: need to know version to know how many bits length takes.
         // But need to know how many bits it takes to know version. First we
         // take a guess at version by assuming version will be the minimum, 1:
         auto provisionalBitsNeeded = headerBits.getSize()
 			+ mode.getCharacterCountBits(QrCodeVersion.getVersionForNumber(1))
 			+ dataBits.getSize();
 		
-		std.stdio.writeln("provisionalBitsNeeded:", provisionalBitsNeeded, " headerBits.getSize():", headerBits.getSize());
-       auto provisionalVersion = chooseVersion(provisionalBitsNeeded, ecLevel);
-	   std.stdio.writeln("provisionalVersion:", provisionalVersion, " ecLevel: ", ecLevel);
-
+		 auto provisionalVersion = chooseVersion(provisionalBitsNeeded, ecLevel);
+	  
         // Use that guess to calculate the right version. I am still not sure
         // this works in 100% of cases.
         auto bitsNeeded = headerBits.getSize()
@@ -95,28 +87,21 @@ class Encoder
 			+ dataBits.getSize();
         auto _version = chooseVersion(bitsNeeded, ecLevel);
 
-		std.stdio.writeln("bitsNeeded:", bitsNeeded, " _version: ", _version);
-        auto headerAndDataBits = new BitArray();
+		 auto headerAndDataBits = new BitArray();
         headerAndDataBits.appendBitArray(headerBits);
-		std.stdio.writeln("headerAndDataBits:", headerAndDataBits.getBitArray(), " size:", headerAndDataBits.getSize());
-        // Find "length" of main segment and write it.
+		 // Find "length" of main segment and write it.
         auto numLetters = (mode.mode == Mode.BYTE ? dataBits.getSizeInBytes() : content.length);
-		std.stdio.writeln("numLetters:", numLetters);
-	    appendLengthInfo(cast(int)numLetters, _version, mode, headerAndDataBits);
-		std.stdio.writeln("headerAndDataBits:", headerAndDataBits.getBitArray(), " size:", headerAndDataBits.getSize());
-
+		appendLengthInfo(cast(int)numLetters, _version, mode, headerAndDataBits);
+		
         // Put data together into the overall payload.
         headerAndDataBits.appendBitArray(dataBits);
-		std.stdio.writeln("headerAndDataBits:", headerAndDataBits.getBitArray(), " size:", headerAndDataBits.getSize());
-
+		
         auto ecBlocks     = _version.getEcBlocksForLevel(ecLevel);
         auto numDataBytes = _version.TotalCodewords() - ecBlocks.getTotalEcCodewords();
-		std.stdio.writeln("ecBlocks:", ecBlocks.getEcBlocks(), " getTotalEcCodewords:",ecBlocks.getTotalEcCodewords(),  " numDataBytes:", numDataBytes);
-
+		
         // Terminate the bits properly.
 	    terminateBits(numDataBytes, headerAndDataBits);
-		std.stdio.writeln("headerAndDataBits:", headerAndDataBits.getBitArray(), " size:", headerAndDataBits.getSize());
-
+		
         // Interleave data bits with error correction code.
         auto finalBits = interleaveWithEcBytes(
 												headerAndDataBits,
@@ -124,9 +109,7 @@ class Encoder
 												numDataBytes,
 												ecBlocks.getNumBlocks()
 													);
-		std.stdio.writeln("headerAndDataBits:", headerAndDataBits.getBitArray(), " size:", headerAndDataBits.getSize());
-		std.stdio.writeln("finalBits:", finalBits);
-
+		
         QrCode qrCode = new QrCode();
         qrCode.errorCorrectionLevel(ecLevel);
         qrCode.mode(mode);
@@ -135,12 +118,12 @@ class Encoder
         auto dimension   = _version.DimensionForVersion();
         ByteMatrix matrix      = new ByteMatrix(dimension, dimension);
         auto maskPattern = chooseMaskPattern(finalBits, ecLevel, _version, matrix);
-		std.stdio.writeln("maskPattern:",maskPattern);
-        qrCode.maskPattern(maskPattern);
+
+		qrCode.maskPattern(maskPattern);
         // Build the matrix and set it to "qrCode".
 		MatrixUtil.buildMatrix(finalBits, ecLevel, _version, maskPattern, matrix);
-		std.stdio.writeln("finalBits:", finalBits);
-        qrCode.matrix(matrix);
+		
+		qrCode.matrix(matrix);
 		version(ITHOX_QRCODE)
 		{
 			std.stdio.writeln("provisionalBitsNeeded:", provisionalBitsNeeded);
@@ -148,6 +131,7 @@ class Encoder
 			std.stdio.writeln("QrCodeVersion.getVersionForNumber(1):", QrCodeVersion.getVersionForNumber(1));
 			std.stdio.writeln("numLetters:", numLetters);
 			std.stdio.writeln("content:", content);
+			std.stdio.writeln("maskPattern:", maskPattern);
 		}
         return qrCode;
     }
@@ -390,7 +374,7 @@ class Encoder
 	* @return Version
 	* @throws Exception\WriterException
 	*/
-    protected static QrCodeVersion chooseVersion(int numInputBits, ErrorCorrectionLevel ecLevel)
+    protected static QrCodeVersion chooseVersion(BitArrayBitType numInputBits, ErrorCorrectionLevel ecLevel)
     {
         for (auto versionNum = 1; versionNum <= 40; versionNum++) {
             QrCodeVersion _version  = QrCodeVersion.getVersionForNumber(versionNum);
@@ -583,7 +567,6 @@ class Encoder
         return ecBytes;
     }
 
-	protected static ReedSolomonCodec[string] codecs;/// Codec cache.
 
 	/**
 	* Gets an RS codec and caches it.
@@ -594,15 +577,7 @@ class Encoder
 	*/
     protected static ReedSolomonCodec getCodec(int numDataBytes, int numEcBytesInBlock)
     {
-		import std.format;
-        string cacheId = format("%s-%s", numDataBytes,numEcBytesInBlock);
-		debug(ITHOX_QRCODE)
-			std.stdio.writeln(cacheId);
-		auto p = cacheId in codecs;
-		debug(ITHOX_QRCODE)
-			std.stdio.writeln("p is pointer", p);
-        if (!p) {
-			codecs[cacheId] = new ReedSolomonCodec(
+		return new ReedSolomonCodec(
 													 8,
 													 0x11d,
 													 0,
@@ -610,12 +585,8 @@ class Encoder
 													 numEcBytesInBlock,
 													 255 - numDataBytes - numEcBytesInBlock
 													 );
-			return codecs[cacheId];
-        }
-        return *p;
-    }
 
-
+	}
 	/**
 	* Chooses the best mask pattern for a matrix.
 	*
@@ -625,7 +596,7 @@ class Encoder
 	* @param  ByteMatrix           matrix
 	* @return integer
 	*/
-    protected static int chooseMaskPattern(BitArray bits, ErrorCorrectionLevel ecLevel,QrCodeVersion _version,ByteMatrix matrix) 
+    protected static int chooseMaskPattern(BitArray bits, ErrorCorrectionLevel ecLevel,QrCodeVersion _version,ref ByteMatrix matrix) 
 	{
 		auto minPenality     = int.max;
 		auto bestMaskPattern = -1;
@@ -636,6 +607,8 @@ class Encoder
 				minPenality     = penalty;
 				bestMaskPattern = maskPattern;
 			}
+			import std.stdio;
+			//writeln(matrix);
 		}
 		return bestMaskPattern;
 	}

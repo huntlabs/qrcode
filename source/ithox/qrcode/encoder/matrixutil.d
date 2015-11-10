@@ -150,11 +150,15 @@ class MatrixUtil
 	* @param  ByteMatrix           $matrix
 	* @return void
 	*/
-    public static void buildMatrix(ref BitArray dataBits,ErrorCorrectionLevel level, QrCodeVersion _version, int maskPattern, ByteMatrix matrix) 
+    public static void buildMatrix(ref BitArray dataBits,ErrorCorrectionLevel level, QrCodeVersion _version, int maskPattern, ref ByteMatrix matrix) 
 	{
 		clearMatrix(matrix);
+
 		embedBasicPatterns(_version, matrix);
 		embedTypeInfo(level, maskPattern, matrix);
+		import std.stdio;
+		//writeln("clearMatrix(matrix);",maskPattern);
+		//writeln(matrix);
 		maybeEmbedVersionInfo(_version, matrix);
 		embedDataBits(dataBits, maskPattern, matrix);
 	}
@@ -166,7 +170,7 @@ class MatrixUtil
 	* @param  ByteMatrix           matrix
 	* @return void
 	*/
-    protected static void embedTypeInfo(ErrorCorrectionLevel level, int maskPattern, ByteMatrix matrix)
+    protected static void embedTypeInfo(ErrorCorrectionLevel level, int maskPattern, ref ByteMatrix matrix)
     {
         auto typeInfoBits = new BitArray();
 	    makeTypeInfoBits(level, maskPattern, typeInfoBits);
@@ -185,6 +189,9 @@ class MatrixUtil
                 y2 = matrix.height() - 7 + (i - 8);
             }
             matrix.set(x2, y2, bit);
+
+			import std.stdio;
+			//writeln("----bit:", bit, " x1:", x1, " y1:", y1, " x2:", x2, " y2:", y2);
         }
     }
 
@@ -197,10 +204,10 @@ class MatrixUtil
 	* @return void
 	* @throws Exception\RuntimeException
 	*/
-    protected static void makeTypeInfoBits(ErrorCorrectionLevel level, int maskPattern, BitArray bits)
+    protected static void makeTypeInfoBits(ErrorCorrectionLevel level, int maskPattern, ref BitArray bits)
     {
-        auto typeInfo = (getOrdinalErrorCorrectionLevel(level) << 3) | maskPattern;
-        bits.appendBits(typeInfo, 5);
+		 auto typeInfo = (cast(int)level << 3) | maskPattern;
+		bits.appendBits(typeInfo, 5);
         auto bchCode = calculateBchCode(typeInfo, typeInfoPoly);
         bits.appendBits(bchCode, 10);
        auto  maskBits = new BitArray();

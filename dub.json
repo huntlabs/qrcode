@@ -1,0 +1,9 @@
+{
+    "name": "ithoxd-qrcode",
+    "description": "A minimal D application.",
+    "copyright": "Copyright © 2015, developer",
+    "authors": [ "developer" ],
+    "versions": [ "ITHOX_QRCODE"],
+	"dependencies": {
+	}
+}
