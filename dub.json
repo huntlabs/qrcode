@@ -1,8 +1,9 @@
 {
     "name": "ithoxd-qrcode",
-    "description": "A minimal D application.",
-    "copyright": "Copyright © 2015, developer",
-    "authors": [ "developer" ],
+    "description": "qrcode writen in dlang.",
+    "copyright": "Copyright © 2015, donglei",
+    "authors": [ "donglei" ],
+    "license": "GPL",
     "versions": [ "ITHOX_QRCODE"],
 	"dependencies": {
 	}
