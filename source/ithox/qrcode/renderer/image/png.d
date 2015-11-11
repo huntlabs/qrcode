@@ -3,18 +3,32 @@ module ithox.qrcode.renderer.image.png;
 import ithox.qrcode.renderer.image.abstractrender;
 import ithox.qrcode.renderer.color.colorinterface;
 
+import dmagick.Image;
+import dmagick.Geometry;
+import dmagick.Color;
+import dmagick.DrawingContext;
+
+
+import ithox.qrcode.renderer.color.colorinterface;
+
 /**
 * PNG backend.
 */
 class Png : AbstractRenderer
 {
 	 
+	protected Image image;
+
+	protected DrawingContext draw;
+
     /**
 	* Colors used for drawing.
 	*
 	* @var array
 	*/
-    protected  ColorInterface[string] colors;
+    protected  Color[string] colors;
+
+
 
 	/**
 	* init(): defined by RendererInterface.
@@ -24,8 +38,21 @@ class Png : AbstractRenderer
 	*/
     public override void  initRender()
     {
-        
+		Geometry geo;
+		geo.width = this.finalWidth;
+		geo.height = this.finalHeight;
+
+		auto ci =  this.getBackgroundColor();
+        this.image = new Image(geo, this.getMagicColor(ci));
+		this.draw = new DrawingContext();
     }
+
+	private Color getMagicColor(ColorInterface ci)
+	{
+		import dmagick.ColorRGB;
+		auto tmp = ci.toRgb();
+		return new ColorRGB(tmp.getRed(), tmp.getGreen(),tmp.getBlue);
+	}
 
 	/**
 	* addColor(): defined by RendererInterface.
@@ -38,7 +65,7 @@ class Png : AbstractRenderer
 	*/
 	public override void addColor(string id, ColorInterface color)
 	{
-		
+		this.colors[id] = this.getMagicColor(color);
 	}
     /**
 	* drawBackground(): defined by RendererInterface.
@@ -62,7 +89,8 @@ class Png : AbstractRenderer
 	*/
     public override void drawBlock(int x, int y, string colorId)
     {
-        
+        this.draw.rectangle(x,y,x+this.blockSize-1, y + this.blockSize -1);
+		this.draw.fill(this.colors[colorId]);
     }
     /**
 	* getByteStream(): defined by RendererInterface.
@@ -72,6 +100,9 @@ class Png : AbstractRenderer
 	*/
     public override string getByteStream()
     {
-		return string.init;
+		this.draw.draw(this.image);
+		//this.image.write("xxx.png");
+		return cast(string)(this.image.toBlob("png"));
+		//return string.init;
     }
 }

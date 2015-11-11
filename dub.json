@@ -4,7 +4,8 @@
     "copyright": "Copyright © 2015, donglei",
     "authors": [ "donglei" ],
     "license": "GPL",
-    "versions": [ "ITHOX_QRCODE"],
+    "versions": [ "ITHOX_QRCODE", "MagickCore_691"],
+    "libs": [ "MagickCore-6.Q16"],
 	"dependencies": {
 	}
 }
