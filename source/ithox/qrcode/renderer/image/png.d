@@ -28,6 +28,7 @@ class Png : AbstractRenderer
 	*/
     protected  Color[string] colors;
 
+	protected Image mergeImage;
 
 
 	/**
@@ -54,6 +55,7 @@ class Png : AbstractRenderer
 		return new ColorRGB(tmp.getRed(), tmp.getGreen(),tmp.getBlue);
 	}
 
+	
 	/**
 	* addColor(): defined by RendererInterface.
 	*
@@ -101,8 +103,24 @@ class Png : AbstractRenderer
     public override string getByteStream()
     {
 		this.draw.draw(this.image);
-		//this.image.write("xxx.png");
+		if(this.mergeImage !is null)
+		{
+			auto sourceSize = this.image.size();
+			auto mergeSize = this.mergeImage.size();
+
+			auto centerY = (sourceSize.height / 2) - (mergeSize.height / 2);
+			auto centerX = (sourceSize.width / 2) - (mergeSize.width / 2);
+			
+			import dmagick.c.composite;
+			this.image.composite(cast(const)this.mergeImage, CompositeOperator.AddCompositeOp, cast(long)centerX,cast(long)centerY);
+		}
+
 		return cast(string)(this.image.toBlob("png"));
 		//return string.init;
     }
+
+	public void setMergeImage(string merge_file)
+	{
+		this.mergeImage = new Image(merge_file);
+	}
 }

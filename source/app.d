@@ -2,8 +2,8 @@ import std.stdio;
 
 void main()
 {
-	testQrCode();
-	testQrCodeEps();
+	//testQrCode();
+	//testQrCodeEps();
 	testQrCodePng();
 }
 
@@ -46,12 +46,14 @@ void testQrCodeEps()
 void testQrCodePng()
 {
 	import ithox.qrcode.qrcode;
-	AbstractRenderer png = new Png();
+	Png png = new Png();
 
 	png.setWidth(250);
 	png.setHeight(250);
 	//png.setBackgroundColor(new Rgb(255,0,255));
+	//png.setForegroundColor(new Rgb(0,0,255));
 	png.setMargin(3);
+	png.setMergeImage("./favicon.ico");
 	QrCodeWriter qwr = new QrCodeWriter(png);
 	qwr.writeFile("Hello World Powered By D", "hello-world.png", "UTF-8",ErrorCorrectionLevel.H);
 }
