@@ -50,8 +50,8 @@ void testQrCodePng()
 
 	png.setWidth(250);
 	png.setHeight(250);
-	//png.setBackgroundColor(new Rgb(255,0,255));
-	//png.setForegroundColor(new Rgb(0,0,255));
+	png.setBackgroundColor(new Rgb(255,0,255));
+	png.setForegroundColor(new Rgb(0,0,255));
 	png.setMargin(3);
 	png.setMergeImage("./favicon.ico");
 	QrCodeWriter qwr = new QrCodeWriter(png);

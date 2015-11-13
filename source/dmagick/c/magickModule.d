@@ -16,33 +16,35 @@ extern(C)
 		MagickImageFilterModule
 	}
 
-	struct ModuleInfo
-	{
-		char*
-			path,
-			tag;
+	package{
+		struct DModuleInfo
+		{
+			char*
+				path,
+				tag;
 
-		void*
-			handle;
+			void*
+				handle;
 
-		void
-			function() unregister_module;
+			void
+				function() unregister_module;
 
-		size_t
-			function() register_module;
+			size_t
+				function() register_module;
 
-		time_t
-			timestamp;
+			time_t
+				timestamp;
 
-		MagickBooleanType
-			stealth;
+			MagickBooleanType
+				stealth;
 
-		ModuleInfo*
-			previous,
-			next;
+			ModuleInfo*
+				previous,
+				next;
 
-		size_t
-			signature;
+			size_t
+				signature;
+		}
 	}
 
 	size_t ImageFilterHandler(Image**, const int, const(char)**, ExceptionInfo*);

@@ -5,6 +5,12 @@ qrcode powered by dlang
 - it just support svg currently.
 - png jpeg will supported in the next time
 
+## ldc2编译
+
+-----
+	dub build --build=release --compiler=ldc2 -v -f 
+-----
+
 ## example
 
 -----
