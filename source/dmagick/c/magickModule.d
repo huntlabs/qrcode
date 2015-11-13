@@ -15,9 +15,8 @@ extern(C)
 		MagickImageCoderModule,
 		MagickImageFilterModule
 	}
-
-	package{
-		struct DModuleInfo
+/*
+		struct ModuleInfo
 		{
 			char*
 				path,
@@ -45,13 +44,12 @@ extern(C)
 			size_t
 				signature;
 		}
-	}
-
+*/
 	size_t ImageFilterHandler(Image**, const int, const(char)**, ExceptionInfo*);
 
 	char** GetModuleList(const(char)*, const MagickModuleType, size_t*, ExceptionInfo*);
 
-	const(ModuleInfo)** GetModuleInfoList(const(char)*, size_t*, ExceptionInfo*);
+	//const(ModuleInfo)** GetModuleInfoList(const(char)*, size_t*, ExceptionInfo*);
 
 	static if ( MagickLibVersion < 0x689 )
 	{
@@ -64,7 +62,7 @@ extern(C)
 	MagickBooleanType OpenModule(const(char)*, ExceptionInfo*);
 	MagickBooleanType OpenModules(ExceptionInfo*);
 
-	ModuleInfo* GetModuleInfo(const(char)*, ExceptionInfo*);
+	//ModuleInfo* GetModuleInfo(const(char)*, ExceptionInfo*);
 
 	void DestroyModuleList();
 	void ModuleComponentTerminus();
