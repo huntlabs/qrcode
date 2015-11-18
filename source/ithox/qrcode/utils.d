@@ -22,26 +22,9 @@ string iconv_charset(string inbuf, string tocode, string fromcode)
 {
 	return "";
 }
-
-unittest{
-	import std.stdio;
-
-	int main() {
-		iconv_t cd = iconv_open("UTF-16LE","UTF-8");
-
-		char[] str = "this is a test";
-		void* inp = str;
-		size_t in_len = str.length;
-
-		wchar[256] outstr; // some giant buffer
-		void* outp=outstr;
-		size_t out_len = outstr.length;
-
-		size_t res = iconv(cd,&inp,&in_len,&outp,&out_len);
-
-		writefln(outstr[0..str.length]);
-		iconv_close(cd);
-		return 0;
-	}
-
+/// '1' to 1
+int charToInt(char c)
+{
+    c -= '0';
+    return c <= 9 ? c : -1;
 }

@@ -255,20 +255,20 @@ class Encoder
 	*/
     protected static void appendNumericBytes(string content, BitArray bits)
     {
-		import std.conv;
+		import std.conv, ithox.qrcode.utils;
 		auto length = content.length;
-		auto i      = 0;
+		int i      = 0;
         while (i < length) {
-            auto num1 = to!(int) (content[i]);
+            auto num1 = charToInt(content[i]);
             if (i + 2 < length) {
                 // Encode three numeric letters in ten bits.
-                auto num2 = to!(int)(content[i + 1]);
-               auto num3 = to!(int) (content[i + 2]);
+                auto num2 = charToInt(content[i + 1]);
+               auto num3 = charToInt(content[i + 2]);
                 bits.appendBits(num1 * 100 + num2 * 10 + num3, 10);
                 i += 3;
             } else if (i + 1 < length) {
                 // Encode two numeric letters in seven bits.
-                auto num2 = to!int (content[i + 1]);
+                auto num2 = charToInt(content[i + 1]);
                 bits.appendBits(num1 * 10 + num2, 7);
                 i += 2;
             } else {
@@ -324,7 +324,7 @@ class Encoder
         }
 		*/
 		version(ITHOX_QRCODE)
-			std.stdio.writeln("content:", content);
+			std.stdio.writeln("content:----", content);
         auto length =content.length;
         for (auto i = 0; i < length; i++) {
             bits.appendBits(cast(int)(content[i]), 8, true);
