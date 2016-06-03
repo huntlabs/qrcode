@@ -69,7 +69,7 @@ class BitArray
 	*/
     public bool get(long i)
     {
-		return (this.bits[i >> 5] & (1L << (i & 0x1f))) != 0;
+		return (this.bits[i >> 5L] & (1L << (i & 0x1f))) != 0;
     }
     /**
 	* Sets a specific bit.

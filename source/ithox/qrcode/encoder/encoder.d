@@ -11,6 +11,7 @@ import ithox.qrcode.encoder.bytematrix;
 import ithox.qrcode.encoder.matrixutil;
 import ithox.qrcode.encoder.maskutil;
 import ithox.qrcode.encoder.blockpair;
+import std.stdio;
 
 
 import std.string;
