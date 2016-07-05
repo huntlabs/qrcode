@@ -1,7 +1,7 @@
 {
-    "name": "ithoxd-qrcode",
+    "name": "qrcode",
     "description": "qrcode writen in dlang.",
-    "copyright": "Copyright © 2015, donglei",
+    "copyright": "Copyright (C) 2015-2016 Shanghai Putao Technology Co., Ltd",
     "authors": [ "donglei" ],
     "license": "GPL",
     "versions": [ "ITHOX_QRCODE", "MagickCore_691"],
