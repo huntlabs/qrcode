@@ -2,8 +2,13 @@
 qrcode powered by dlang
 
 ## Additional description
-- it just support svg currently.
-- png jpeg will supported in the next time
+- it  support svg png jpeg 
+
+## TODO
+- change folder
+- remove app.d
+- add example
+- add test case
 
 ## ldc2编译
 
