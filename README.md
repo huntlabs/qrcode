@@ -2,7 +2,7 @@
 qrcode powered by dlang
 
 ## Additional description
-- it  support svg png jpeg 
+- it  support svg png  
 
 ## TODO
 - change folder
@@ -27,7 +27,7 @@ qrcode powered by dlang
 	
 	void testQrCode()
 	{
-		import ithox.qrcode.qrcode;
+		import ithox.qrcode;
 	
 		AbstractRenderer plain = new Svg();
 		plain.setWidth(250);

@@ -9,7 +9,7 @@ void main()
 
 void testQrCode()
 {
-	import ithox.qrcode.qrcode;
+	import ithox.qrcode;
 
 	AbstractRenderer plain = new Svg();
 	plain.setWidth(250);
@@ -27,7 +27,7 @@ void testQrCode()
 
 void testQrCodeEps()
 {
-	import ithox.qrcode.qrcode;
+	import ithox.qrcode;
 
 	AbstractRenderer plain = new Eps();
 	plain.setWidth(250);
@@ -45,7 +45,7 @@ void testQrCodeEps()
 
 void testQrCodePng()
 {
-	import ithox.qrcode.qrcode;
+	import ithox.qrcode;
 	Png png = new Png();
 
 	png.setWidth(250);

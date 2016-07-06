@@ -1,0 +1,12 @@
+{
+	"name": "testqrcode",
+	"authors": [
+		"donglei"
+	],
+	"description": "test qrcode",
+	"copyright": "Copyright © 2016, root",
+	"license": "GPL",
+	"dependencies": {
+		"qrcode":{"path":"../../"}
+	}
+}

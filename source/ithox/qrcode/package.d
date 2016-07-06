@@ -1,4 +1,4 @@
-module ithox.qrcode.qrcode;
+module ithox.qrcode;
 
 public import ithox.qrcode.common.bitarray;
 public import ithox.qrcode.common.bitmatrix;
