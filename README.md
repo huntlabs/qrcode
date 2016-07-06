@@ -5,9 +5,9 @@ qrcode powered by dlang
 - it  support svg png  
 
 ## TODO
-- change folder
-- remove app.d
-- add example
+- change folder (Done)
+- remove app.d (Done)
+- add example (Done)
 - add test case
 
 ## ldc2编译
