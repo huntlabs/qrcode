@@ -20,11 +20,7 @@ class BitUtils
 	*/
     public static ulong unsignedRightShift(ulong a, ulong b)
     {
-        return (
-				a >= 0
-				? a >> b
-				: ((a & 0x7fffffff) >> b) | (0x40000000 >> (b - 1))
-				);
+        return (a >= 0 ? a >> b : ((a & 0x7fffffff) >> b) | (0x40000000 >> (b - 1)));
     }
     /**
 	* Gets the number of trailing zeros.
@@ -34,9 +30,10 @@ class BitUtils
 	*/
     public static ulong numberOfTrailingZeros(ulong i)
     {
-		import std.string, std.format, std.conv;
-		auto pos = format("%032b", i).lastIndexOf('1');
-		
-		return pos == -1 ? 32 : 31 - pos;
+        import std.string, std.format, std.conv;
+
+        auto pos = format("%032b", i).lastIndexOf('1');
+
+        return pos == -1 ? 32 : 31 - pos;
     }
 }

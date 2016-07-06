@@ -10,19 +10,19 @@ import ithox.qrcode.common.errorcorrectionlevel;
 */
 class QrCodeWriter
 {
-	/**
+    /**
 	* Renderer instance.
 	*
 	* @var RendererInterface
 	*/
     protected RendererInterface renderer;
 
-	this(RendererInterface irender)
-	{
-		this.renderer = irender;
-	}
+    this(RendererInterface irender)
+    {
+        this.renderer = irender;
+    }
 
-	/**
+    /**
 	* Sets the renderer used to create a byte stream.
 	*
 	* @param  RendererInterface $renderer
@@ -43,7 +43,7 @@ class QrCodeWriter
         return this.renderer;
     }
 
-	/**
+    /**
 	* Writes QR code and returns it as string.
 	*
 	* Content is a string which *should* be encoded in UTF-8, in case there are
@@ -55,16 +55,18 @@ class QrCodeWriter
 	* @return string
 	* @throws Exception\InvalidArgumentException
 	*/
-    public string writeString(string content, string encoding = Encoder.DEFAULT_BYTE_MODE_ECODING, ErrorCorrectionLevel ecLevel = ErrorCorrectionLevel.L) 
-	{
-		if (content.length == 0) {
-			throw new Exception("Found empty contents");
-		}
-		auto qrCode = Encoder.encode(content, ecLevel, encoding);
-		return this.getRenderer().render(qrCode);
-	}
+    public string writeString(string content, string encoding = Encoder.DEFAULT_BYTE_MODE_ECODING,
+            ErrorCorrectionLevel ecLevel = ErrorCorrectionLevel.L)
+    {
+        if (content.length == 0)
+        {
+            throw new Exception("Found empty contents");
+        }
+        auto qrCode = Encoder.encode(content, ecLevel, encoding);
+        return this.getRenderer().render(qrCode);
+    }
 
-	/**
+    /**
 	* Writes QR code to a file.
 	*
 	* @see    Writer::writeString()
@@ -74,10 +76,11 @@ class QrCodeWriter
 	* @param  integer $ecLevel
 	* @return void
 	*/
-    public void writeFile(string content, string filename, string encoding = Encoder.DEFAULT_BYTE_MODE_ECODING,ErrorCorrectionLevel ecLevel = ErrorCorrectionLevel.L) 
-	{
-		import std.file;
-		write(filename, this.writeString(content, encoding,ecLevel));
-		//file_put_contents($filename, $this->writeString($content, $encoding, $ecLevel));
-	}
+    public void writeFile(string content, string filename, string encoding = Encoder.DEFAULT_BYTE_MODE_ECODING,
+            ErrorCorrectionLevel ecLevel = ErrorCorrectionLevel.L)
+    {
+        import std.file;
+
+        write(filename, this.writeString(content, encoding, ecLevel));
+    }
 }

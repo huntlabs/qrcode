@@ -18,7 +18,6 @@ public import ithox.qrcode.encoder.maskutil;
 public import ithox.qrcode.encoder.matrixutil;
 public import ithox.qrcode.encoder.qrcode;
 
-
 public import ithox.qrcode.qrcodewriter;
 public import ithox.qrcode.utils;
 public import ithox.qrcode.datatypesinterface;
@@ -36,4 +35,3 @@ public import ithox.qrcode.renderer.image.eps;
 public import ithox.qrcode.renderer.image.png;
 public import ithox.qrcode.renderer.image.decorator.decoratorinterface;
 public import ithox.qrcode.renderer.image.decorator.finderpattern;
-

@@ -26,7 +26,7 @@ class BitArray
 	*
 	* @param integer size
 	*/
-	this(int size = 0)
+    this(int size = 0)
     {
         this.size = size;
         this.bits = new BitArrayBitType[(this.size + 31) >> 3];
@@ -57,7 +57,8 @@ class BitArray
 	*/
     public void ensureCapacity(BitArrayBitType size)
     {
-        if (size > bits.length << 5) {
+        if (size > bits.length << 5)
+        {
             this.bits.length = (size + 31) >> 5;
         }
     }
@@ -69,7 +70,7 @@ class BitArray
 	*/
     public bool get(long i)
     {
-		return (this.bits[i >> 5L] & (1L << (i & 0x1f))) != 0;
+        return (this.bits[i >> 5L] & (1L << (i & 0x1f))) != 0;
     }
     /**
 	* Sets a specific bit.
@@ -99,15 +100,18 @@ class BitArray
 	*/
     public long getNextSet(long from)
     {
-        if (from >= this.size) {
+        if (from >= this.size)
+        {
             return this.size;
         }
-       auto bitsOffset  = from >> 5;
+        auto bitsOffset = from >> 5;
         auto currentBits = this.bits[bitsOffset];
-        auto bitsLength  = this.bits.length;
+        auto bitsLength = this.bits.length;
         currentBits &= ~((1L << (from & 0x1f)) - 1);
-        while (currentBits == 0) {
-            if (++bitsOffset == bitsLength) {
+        while (currentBits == 0)
+        {
+            if (++bitsOffset == bitsLength)
+            {
                 return this.size;
             }
             currentBits = this.bits[bitsOffset];
@@ -123,18 +127,21 @@ class BitArray
 	*/
     public ulong getNextUnset(int from)
     {
-        if (from >= this.size) {
+        if (from >= this.size)
+        {
             return this.size;
         }
-        auto bitsOffset  = from >> 5;
-        auto currentBits = ~this.bits[bitsOffset];
-        auto bitsLength  = this.bits.length;
+        auto bitsOffset = from >> 5;
+        auto currentBits =  ~this.bits[bitsOffset];
+        auto bitsLength = this.bits.length;
         currentBits &= ~((1L << (from & 0x1f)) - 1);
-        while (currentBits == 0) {
-            if (++bitsOffset == bitsLength) {
+        while (currentBits == 0)
+        {
+            if (++bitsOffset == bitsLength)
+            {
                 return this.size;
             }
-            currentBits = ~this.bits[bitsOffset];
+            currentBits =  ~this.bits[bitsOffset];
         }
         auto result = (bitsOffset << 5) + BitUtils.numberOfTrailingZeros(currentBits);
         return result > this.size ? this.size : result;
@@ -160,24 +167,31 @@ class BitArray
 	*/
     public void setRange(int start, int end)
     {
-        if (end < start) {
+        if (end < start)
+        {
             throw new Exception("End must be greater or equal to start");
         }
-        if (end == start) {
+        if (end == start)
+        {
             return;
         }
         end--;
         auto firstInt = start >> 5;
-        auto lastInt  = end >> 5;
-		auto mask = 0;
-        for (auto i = firstInt; i <= lastInt; i++) {
-            auto firstBit = i > firstInt ?  0 : start & 0x1f;
-            auto lastBit  = i < lastInt ? 31 : end & 0x1f;
-            if (firstBit == 0 && lastBit == 31) {
+        auto lastInt = end >> 5;
+        auto mask = 0;
+        for (auto i = firstInt; i <= lastInt; i++)
+        {
+            auto firstBit = i > firstInt ? 0 : start & 0x1f;
+            auto lastBit = i < lastInt ? 31 : end & 0x1f;
+            if (firstBit == 0 && lastBit == 31)
+            {
                 mask = 0x7fffffff;
-            } else {
+            }
+            else
+            {
                 mask = 0;
-                for (auto j = firstBit; j < lastBit; j++) {
+                for (auto j = firstBit; j < lastBit; j++)
+                {
                     mask |= 1L << j;
                 }
             }
@@ -191,7 +205,7 @@ class BitArray
 	*/
     public void clear()
     {
-		this.bits[] = 0;
+        this.bits[] = 0;
     }
     /**
 	* Checks if a range of bits is set or not set.
@@ -204,28 +218,36 @@ class BitArray
 	*/
     public bool isRange(int start, int end, int value)
     {
-        if (end < start) {
+        if (end < start)
+        {
             throw new Exception("End must be greater or equal to start");
         }
-        if (end == start) {
+        if (end == start)
+        {
             return false;
         }
         end--;
         auto firstInt = start >> 5;
-        auto lastInt  = end >> 5;
-		auto mask = 0;
-        for (auto i = firstInt; i <= lastInt; i++) {
-            auto firstBit = i > firstInt ?  0 : start & 0x1f;
-            auto lastBit  = i < lastInt ? 31 : end & 0x1f;
-            if (firstBit == 0 && lastBit == 31) {
+        auto lastInt = end >> 5;
+        auto mask = 0;
+        for (auto i = firstInt; i <= lastInt; i++)
+        {
+            auto firstBit = i > firstInt ? 0 : start & 0x1f;
+            auto lastBit = i < lastInt ? 31 : end & 0x1f;
+            if (firstBit == 0 && lastBit == 31)
+            {
                 mask = 0x7fffffff;
-            } else {
+            }
+            else
+            {
                 mask = 0;
-                for (auto j = firstBit; j <= lastBit; j++) {
+                for (auto j = firstBit; j <= lastBit; j++)
+                {
                     mask |= 1L << j;
                 }
             }
-            if ((this.bits[i] & mask) != (value ? mask : 0)) {
+            if ((this.bits[i] & mask) != (value ? mask : 0))
+            {
                 return false;
             }
         }
@@ -240,18 +262,21 @@ class BitArray
     public void appendBit(bool bit, bool test = false)
     {
         this.ensureCapacity(this.size + 1);
-        if (bit) {
-			if(test)
-			{
-				import std.stdio;
-				//writeln("---",this.bits, " size:", this.size);
-			}
+        if (bit)
+        {
+            if (test)
+            {
+                import std.stdio;
+
+                //writeln("---",this.bits, " size:", this.size);
+            }
             this.bits[this.size >> 5] = this.bits[this.size >> 5] | (1L << (this.size & 0x1f));
-			if(test)
-			{
-				import std.stdio;
-				//writeln(this.bits);
-			}
+            if (test)
+            {
+                import std.stdio;
+
+                //writeln(this.bits);
+            }
         }
         this.size++;
     }
@@ -265,16 +290,19 @@ class BitArray
 	*/
     public void appendBits(int value, int numBits, bool test = false)
     {
-        if (numBits < 0 || numBits > 32) {
+        if (numBits < 0 || numBits > 32)
+        {
             throw new Exception("Num bits must be between 0 and 32");
         }
         this.ensureCapacity(this.size + numBits);
-        for (auto numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
-			if(test)
-			{
-				import std.stdio;
-				//writeln("value:", value , " xxx:", ((value >> (numBitsLeft - 1)) & 0x01));
-			}
+        for (auto numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--)
+        {
+            if (test)
+            {
+                import std.stdio;
+
+                //writeln("value:", value , " xxx:", ((value >> (numBitsLeft - 1)) & 0x01));
+            }
             this.appendBit(((value >> (numBitsLeft - 1)) & 0x01) == 1, test);
         }
     }
@@ -287,7 +315,8 @@ class BitArray
     public void appendBitArray(BitArray other)
     {
         this.ensureCapacity(this.size + other.getSize());
-        for (auto i = 0; i < other.getSize(); i++) {
+        for (auto i = 0; i < other.getSize(); i++)
+        {
             this.appendBit(other.get(i));
         }
     }
@@ -300,12 +329,14 @@ class BitArray
 	*/
     public void xorBits(BitArray other)
     {
-       auto bitsLength = this.bits.length;
-        auto otherBits  = other.getBitArray();
-        if (bitsLength != otherBits.length) {
+        auto bitsLength = this.bits.length;
+        auto otherBits = other.getBitArray();
+        if (bitsLength != otherBits.length)
+        {
             throw new Exception("Sizes don\'t match");
         }
-        for (auto i = 0; i < bitsLength; i++) {
+        for (auto i = 0; i < bitsLength; i++)
+        {
             this.bits[i] = this.bits[i] ^ otherBits[i];
         }
     }
@@ -319,10 +350,13 @@ class BitArray
     public int[] toBytes(int bitOffset, int numBytes)
     {
         auto bytes = new int[numBytes];
-        for (auto i = 0; i < numBytes; i++) {
-           auto  _byte = 0;
-            for (auto j = 0; j < 8; j++) {
-                if (this.get(bitOffset)) {
+        for (auto i = 0; i < numBytes; i++)
+        {
+            auto _byte = 0;
+            for (auto j = 0; j < 8; j++)
+            {
+                if (this.get(bitOffset))
+                {
                     _byte |= 1L << (7 - j);
                 }
                 bitOffset++;
@@ -347,9 +381,11 @@ class BitArray
 	*/
     public void reverse()
     {
-       auto newBits = new BitArrayBitType[this.bits.length];
-        for (auto i = 0; i < this.size; i++) {
-            if (this.get(this.size - i - 1)) {
+        auto newBits = new BitArrayBitType[this.bits.length];
+        for (auto i = 0; i < this.size; i++)
+        {
+            if (this.get(this.size - i - 1))
+            {
                 newBits[i >> 5] = newBits[i >> 5] | (1L << (i & 0x1f));
             }
         }
@@ -362,13 +398,16 @@ class BitArray
 	*/
     public override string toString()
     {
-		import std.array;
+        import std.array;
+
         Appender!string result = appender!string();
-        for (auto i = 0; i < this.size; i++) {
-            if ((i & 0x07) == 0) {
+        for (auto i = 0; i < this.size; i++)
+        {
+            if ((i & 0x07) == 0)
+            {
                 result.put(" ");
             }
-            result.put(this.get(i) ? 'X' : '.'); 
+            result.put(this.get(i) ? 'X' : '.');
         }
         return result.data;
     }

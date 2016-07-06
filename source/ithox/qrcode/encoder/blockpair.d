@@ -1,12 +1,11 @@
 module ithox.qrcode.encoder.blockpair;
 
-
 /**
 * Block pair.
 */
 class BlockPair
 {
-	/**
+    /**
 	* Data bytes in the block.
 	*
 	* @var SplFixedArray
@@ -24,9 +23,9 @@ class BlockPair
 	* @param SplFixedArray data
 	* @param SplFixedArray errorCorrection
 	*/
-    public  this(int[] data, int[] errorCorrection)
+    public this(int[] data, int[] errorCorrection)
     {
-        this.dataBytes            = data;
+        this.dataBytes = data;
         this.errorCorrectionBytes = errorCorrection;
     }
     /**

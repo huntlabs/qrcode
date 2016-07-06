@@ -32,18 +32,32 @@ class ByteMatrix
     public this(int width, int height)
     {
         this._height = height;
-        this._width  = width;
-		//this._bytes[][] = new int[height][];
-		for(auto i =0; i < height; i++)
-			this._bytes ~= new int[width];
-        
-    }
-    
-	public @property int width(){return _width;}
-	public @property void width(int _m){ _width = _m;}
+        this._width = width;
+        //this._bytes[][] = new int[height][];
+        for (auto i = 0; i < height; i++)
+            this._bytes ~= new int[width];
 
-	public @property int height(){return _height;}
-	public @property void height(int _m){ _height = _m;}
+    }
+
+    public @property int width()
+    {
+        return _width;
+    }
+
+    public @property void width(int _m)
+    {
+        _width = _m;
+    }
+
+    public @property int height()
+    {
+        return _height;
+    }
+
+    public @property void height(int _m)
+    {
+        _height = _m;
+    }
 
     /**
 	* Gets the internal representation of the matrix.
@@ -85,8 +99,8 @@ class ByteMatrix
 	*/
     public void clear(int value)
     {
-		for(auto i =0; i < height; i++)
-			this._bytes[i][] = value;
+        for (auto i = 0; i < height; i++)
+            this._bytes[i][] = value;
     }
     /**
 	* Returns a string representation of the matrix.
@@ -95,24 +109,27 @@ class ByteMatrix
 	*/
     public override string toString()
     {
-		import std.array;
+        import std.array;
 
         Appender!string result = appender!string();
-        for (int y = 0; y < this._height; y++) {
-            for (int x = 0; x < this._width; x++) {
-                switch (this._bytes[y][x]) {
-                    case 0:
-                        result.put(" 0");
-                        break;
-                    case 1:
-                         result.put( " 1");
-                        break;
-                    default:
-                        result.put( "  ");
-                        break;
+        for (int y = 0; y < this._height; y++)
+        {
+            for (int x = 0; x < this._width; x++)
+            {
+                switch (this._bytes[y][x])
+                {
+                case 0:
+                    result.put(" 0");
+                    break;
+                case 1:
+                    result.put(" 1");
+                    break;
+                default:
+                    result.put("  ");
+                    break;
                 }
             }
-            result.put( "\n");
+            result.put("\n");
         }
         return result.data;
     }

@@ -1,14 +1,15 @@
 module ithox.qrcode.common.ecblocks;
 
-struct EcBlock{
-	int count;
-	int dataCodewords;
+struct EcBlock
+{
+    int count;
+    int dataCodewords;
 }
 
 class EcBlocks
 {
 
-	/**
+    /**
 	* Number of EC codewords per block.
 	*
 	* @var integer
@@ -27,21 +28,21 @@ class EcBlocks
 	* @param EcBlock      $ecb1
 	* @param EcBlock|null $ecb2
 	*/
-    this(int ecCodewordsPerBlock, EcBlock* ecb1, EcBlock* ecb2 )
+    this(int ecCodewordsPerBlock, EcBlock* ecb1, EcBlock* ecb2)
     {
         this.ecCodewordsPerBlock = ecCodewordsPerBlock;
 
-		this.ecBlocks = new EcBlock[2];
-		this.ecBlocks[0] = *ecb1;
+        this.ecBlocks = new EcBlock[2];
+        this.ecBlocks[0] = *ecb1;
         this.ecBlocks[1] = *ecb2;
-}
+    }
 
-	this(int ecCodewordsPerBlock, EcBlock* ecb1 )
+    this(int ecCodewordsPerBlock, EcBlock* ecb1)
     {
         this.ecCodewordsPerBlock = ecCodewordsPerBlock;
-		this.ecBlocks = new EcBlock[1];
-		this.ecBlocks[0] = *ecb1;
-		
+        this.ecBlocks = new EcBlock[1];
+        this.ecBlocks[0] = *ecb1;
+
     }
     /**
 	* Gets the number of EC codewords per block.
@@ -60,7 +61,8 @@ class EcBlocks
     public int getNumBlocks()
     {
         auto total = 0;
-        foreach (ecBlock;this.ecBlocks ) {
+        foreach (ecBlock; this.ecBlocks)
+        {
             total += ecBlock.count;
         }
         return total;
