@@ -123,16 +123,14 @@ class Encoder
         MatrixUtil.buildMatrix(finalBits, ecLevel, _version, maskPattern, matrix);
 
         qrCode.matrix(matrix);
-        version (ITHOX_QRCODE)
-        {
-            std.stdio.writeln("provisionalBitsNeeded:", provisionalBitsNeeded);
-            std.stdio.writeln("provisionalVersion:", provisionalVersion);
-            std.stdio.writeln("QrCodeVersion.getVersionForNumber(1):",
-                    QrCodeVersion.getVersionForNumber(1));
-            std.stdio.writeln("numLetters:", numLetters);
-            std.stdio.writeln("content:", content);
-            std.stdio.writeln("maskPattern:", maskPattern);
-        }
+
+        trace("provisionalBitsNeeded:", provisionalBitsNeeded);
+        trace("provisionalVersion:", provisionalVersion);
+        trace("QrCodeVersion.getVersionForNumber(1):", QrCodeVersion.getVersionForNumber(1));
+        trace("numLetters:", numLetters);
+        trace("content:", content);
+        trace("maskPattern:", maskPattern);
+
         return qrCode;
     }
 
@@ -345,8 +343,8 @@ class Encoder
             throw new Exception("Could not encode content to " ~ encoding);
         }
 		*/
-        version (ITHOX_QRCODE)
-            std.stdio.writeln("content:----", content);
+        trace("content:----", content);
+	    
         auto length = content.length;
         for (auto i = 0; i < length; i++)
         {
