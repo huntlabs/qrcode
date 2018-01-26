@@ -10,7 +10,7 @@ qrcode powered by dlang
 - add example (Done)
 - add test case
 
-## ldc2编译
+## compile use ldc2
 
 -----
 	dub build --build=release --compiler=ldc2 -v -f 
@@ -27,7 +27,7 @@ qrcode powered by dlang
 	
 	void testQrCode()
 	{
-		import ithox.qrcode;
+		import qrcode;
 	
 		AbstractRenderer plain = new Svg();
 		plain.setWidth(250);
