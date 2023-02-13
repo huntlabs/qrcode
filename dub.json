@@ -1,10 +1,28 @@
 {
-    "name": "qrcode",
-    "description": "QRCode writen in D programming lanuage.",
-    "copyright": "Copyright (C) 2015-2016 Shanghai Putao Technology Co., Ltd",
-    "authors": [ "donglei" ],
-    "license": "Apache-2.0",
-    "dependencies": {
-        "dmagick": "~>0.2.1"
-    }
+	"authors": [
+		"donglei"
+	],
+	"configurations": [
+		{
+			"dependencies": {
+				"dmagick": "~>0.2.1"
+			},
+			"name": "default",
+			"targetType": "library"
+		},
+		{
+			"excludedSourceFiles": [
+				"source/qrcode/renderer/image/png.d"
+			],
+			"name": "nopng",
+			"targetType": "library"
+		}
+	],
+	"copyright": "Copyright (C) 2015-2016 Shanghai Putao Technology Co., Ltd",
+	"dependencies": {
+		"undead": "~>1.1.8"
+	},
+	"description": "QRCode writen in D programming lanuage.",
+	"license": "Apache-2.0",
+	"name": "qrcode"
 }
