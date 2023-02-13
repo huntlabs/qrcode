@@ -32,6 +32,9 @@ public import qrcode.renderer.text.plain;
 public import qrcode.renderer.image.abstractrender;
 public import qrcode.renderer.image.svg;
 public import qrcode.renderer.image.eps;
-public import qrcode.renderer.image.png;
+
+version(Have_dmagick){
+    public import qrcode.renderer.image.png;
+}
 public import qrcode.renderer.image.decorator.decoratorinterface;
 public import qrcode.renderer.image.decorator.finderpattern;

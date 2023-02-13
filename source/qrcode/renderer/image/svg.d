@@ -4,7 +4,8 @@ import qrcode.renderer.image.abstractrender;
 import qrcode.renderer.color.colorinterface;
 
 
-import std.xml,std.conv, std.format;
+import std.conv, std.format;
+import undead.xml;
 /**
 * SVG backend.
 */
@@ -100,7 +101,6 @@ class Svg : AbstractRenderer
 		use.tag.attr["xlink:href"] = this.getRectPrototypeId(colorId);
 		use.tag.attr["xmlns:xmi"] = "http://www.w3.org/1999/xlink";
 
-      
 		this.svg ~= use;
     }
     /**
